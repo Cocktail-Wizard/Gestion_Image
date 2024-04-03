@@ -19,21 +19,21 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
 
         if(empty($erreurs)){
             
-            echo json_encode(['nom'=> $nomFichier]);
+            
 
             // Ne fonctionne pas en raison des permissions du serveur
-            // $nouveauNom = mt_rand('100000', '999999') . '.' . $extensionFichier;
-            // while(file_exists($nouveauNom)){
-            //     $nouveauNom = mt_rand('100000', '999999') . '.' . $extensionFichier;
-            // }
-            // if(move_uploaded_file($chemin, 'images/' . $nouveauNom)){
-            //     echo json_encode(['chemin' => $nouveauNom]);
-            //     exit();
-            // }
-            //  else {
-            //     $erreurs[] = 'Erreur lors du renommage du fichier'; 
-            //     echo json_encode(['erreurs' => $erreurs]);
-            // }
+            $nouveauNom = mt_rand('100000', '999999') . '.' . $extensionFichier;
+            while(file_exists($nouveauNom)){
+                $nouveauNom = mt_rand('100000', '999999') . '.' . $extensionFichier;
+            }
+            if(move_uploaded_file($chemin, 'images/' . $nouveauNom)){
+                echo json_encode(['chemin' => $nouveauNom]);
+                exit();
+            }
+             else {
+                $erreurs[] = 'Erreur lors du renommage du fichier'; 
+                echo json_encode(['erreurs' => $erreurs]);
+            }
             exit();
         } else {
             echo json_encode(['erreurs' => $erreurs]);
