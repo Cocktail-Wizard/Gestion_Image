@@ -39,6 +39,10 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
             exit();
         }
     }
+    else {
+        echo json_encode(['erreurs' => ['Aucun fichier envoyé']]);
+        exit();
+    }
 
 }
     
