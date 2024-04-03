@@ -21,7 +21,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
             $chemin = 'images/'.$nomFichier;
             move_uploaded_file($cheminTemporaire, $chemin);
             
-            $nouveauNom = 'images/' . mt_rand('100000', '999999') . '.' . $extensionFichier;
+            $nouveauNom = mt_rand('100000', '999999') . '.' . $extensionFichier;
             while(file_exists($nouveauNom)){
                 $nouveauNom = mt_rand('100000', '999999') . '.' . $extensionFichier;
             }
