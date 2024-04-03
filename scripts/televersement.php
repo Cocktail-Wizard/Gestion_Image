@@ -1,6 +1,7 @@
 <?php
 header('content-type: application/json');
-if($_SERVER['REQUEST_METHOD'] == 'POST') {
+if($_SERVER['REQUEST_METHOD'] == 'POST') 
+{   // Vérifier si le fichier a été envoyé
     if(isset($_FILES['image'])){
         $erreurs = [];
         $image = $_FILES['image'];
