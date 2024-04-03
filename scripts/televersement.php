@@ -24,7 +24,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
             while(file_exists($nouveauNom)){
                 $nouveauNom = mt_rand('100000', '999999') . '.' . $extensionFichier;
             }
-            if(rename($chemin,'images/' . $nouveauNom)){
+            if(move_uploaded_file($chemin, 'images/' . $nouveauNom)){
                 echo json_encode(['chemin' => $nouveauNom]);
                 exit();
             }
