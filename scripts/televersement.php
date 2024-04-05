@@ -3,16 +3,16 @@ header('content-type: application/json');
 
 if($_SERVER['REQUEST_METHOD'] === 'POST') 
 {   // Vérifier si le fichier a été envoyé
-    if(isset($_FILES['image'])){
+    $donnee = json_decode(file_get_contents('php://input'), true);
+    if(isset($donnee['image'])){
         $erreurs = [];
-        $image = $_FILES['image'];
-        $chemin = $image['tmp_name'];
-        $nomFichier = $image['name'];
-        
+        $imageDecode = base64_decode($donnee['image']);
+        $f = finfo_open();
+        $typeMime = finfo_buffer($f, $imageDecode, FILEINFO_MIME_TYPE);
+        $extensionFichier = explode('/', $typeMime)[1];
         
         // Vérifier si le fichier est une image
         $extensionsValides = ['jpg', 'jpeg', 'png', 'gif'];
-        $extensionFichier = strtolower(pathinfo($nomFichier, PATHINFO_EXTENSION));
 
         if(!in_array($extensionFichier, $extensionsValides)){
             $erreurs[] = 'Le fichier doit être une image (JPG, JPEG, PNG ou GIF)';
@@ -27,7 +27,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST')
             while(file_exists($nouveauNom)){
                 $nouveauNom = mt_rand('100000', '999999') . '.' . $extensionFichier;
             }
-            if(move_uploaded_file($chemin, 'images/' . $nouveauNom)){
+            if(file_put_contents('images/'. $nouveauNom, $imageDecode)){
                 echo json_encode(['chemin' => $nouveauNom]);
                 exit();
             }
