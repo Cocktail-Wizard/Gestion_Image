@@ -1,8 +1,10 @@
 <?php
+require_once 'configBD.php';
 header('content-type: application/json');
 
 if($_SERVER['REQUEST_METHOD'] === 'POST') 
 {   // Vérifier si le fichier a été envoyé
+    $conn = connexionBD();
     $donnee = json_decode(file_get_contents('php://input'), true);
     if(isset($donnee['image'])){
         $erreurs = [];
@@ -19,22 +21,15 @@ if($_SERVER['REQUEST_METHOD'] === 'POST')
         }
 
         if(empty($erreurs)){
-            
-            
-
             // Ne fonctionne pas en raison des permissions du serveur
             $nouveauNom = mt_rand('100000', '999999') . '.' . $extensionFichier;
-            while(file_exists($nouveauNom)){
-                $nouveauNom = mt_rand('100000', '999999') . '.' . $extensionFichier;
-            }
-            if(file_put_contents('images/'. $nouveauNom, $imageDecode)){
-                echo json_encode(['chemin' => $nouveauNom]);
-                exit();
-            }
-             else {
-                $erreurs[] = 'Erreur lors du renommage du fichier'; 
-                echo json_encode(['erreurs' => $erreurs]);
-            }
+            
+            $requete_preparee = $conn->prepare('INSERT INTO Images (nom, ImageBase64) VALUES (?,?)');
+            $requete_preparee->bind_param('ss', $nouveauNom, $donnee['image']);
+            $requete_preparee->execute();
+            $requete_preparee->close();
+            echo json_encode(['NomFichier' => $nouveauNom]);
+            
             exit();
         } else {
             echo json_encode(['erreurs' => $erreurs]);
