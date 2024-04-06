@@ -21,8 +21,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST')
         }
 
         if(empty($erreurs)){
-            // Ne fonctionne pas en raison des permissions du serveur
-            $nouveauNom = mt_rand('100000', '999999') . '.' . $extensionFichier;
+            // Génère un nom unique pour le fichier
+            $nouveauNom = uniqid(''). '.' . $extensionFichier;
             
             $requete_preparee = $conn->prepare('INSERT INTO Images (nom, ImageBase64) VALUES (?,?)');
             $requete_preparee->bind_param('ss', $nouveauNom, $donnee['image']);
