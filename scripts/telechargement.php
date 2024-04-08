@@ -4,7 +4,7 @@ if($_SERVER['REQUEST_METHOD'] === 'GET'){
     if(empty($_GET['image'])){
         $imageInfo = getimagesize(__DIR__.'/images/defaut.jpg');
         header('Content-Type: '.$imageInfo['mime']);
-        readfile(__DIR__ . 'images/defaut.jpg');
+        readfile(__DIR__ . '/images/defaut.jpg');
         exit();
     }
     $conn = connexionBD();
@@ -18,7 +18,7 @@ if($_SERVER['REQUEST_METHOD'] === 'GET'){
     if($resultat->num_rows === 0){
         $imageInfo = getimagesize(__DIR__.'/images/defaut.jpg');
         header('Content-Type: '.$imageInfo['mime']);
-        readfile(__DIR__ . 'images/defaut.jpg');
+        readfile(__DIR__ . '/images/defaut.jpg');
         exit();
     } else {
         $image = $resultat->fetch_assoc();
