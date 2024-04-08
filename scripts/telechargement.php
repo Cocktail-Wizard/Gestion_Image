@@ -4,11 +4,11 @@ if($_SERVER['REQUEST_METHOD'] === 'GET'){
     if(empty($_GET['image'])){
         $imageInfo = getimagesize(__DIR__.'/images/defaut.jpg');
         header('Content-Type: '.$imageInfo['mime']);
-        readfile('images/defaut.jpg');
+        readfile(__DIR__ . 'images/defaut.jpg');
         exit();
     }
     $conn = connexionBD();
-    $nomImage = $_GET['image'];
+    $nomImage = trim($_GET['image']);
     
     $requete_preparee = $conn->prepare('SELECT ImageBase64 FROM Images WHERE nom = ?');
     $requete_preparee->bind_param('s', $nomImage);
@@ -16,9 +16,9 @@ if($_SERVER['REQUEST_METHOD'] === 'GET'){
     $resultat = $requete_preparee->get_result();
     $requete_preparee->close();
     if($resultat->num_rows === 0){
-        $imageInfo = getimagesize('images/defaut.jpg');
+        $imageInfo = getimagesize(__DIR__.'/images/defaut.jpg');
         header('Content-Type: '.$imageInfo['mime']);
-        readfile('images/defaut.jpg');
+        readfile(__DIR__ . 'images/defaut.jpg');
         exit();
     } else {
         $image = $resultat->fetch_assoc();
