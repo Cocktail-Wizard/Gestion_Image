@@ -2,7 +2,7 @@
 require_once 'configBD.php';
 if($_SERVER['REQUEST_METHOD'] === 'GET'){
     if(empty($_GET['image'])){
-        $imageInfo = getimagesize('images/defaut.jpg');
+        $imageInfo = getimagesize('/scripts/images/defaut.jpg');
         header('Content-Type: '.$imageInfo['mime']);
         readfile('images/defaut.jpg');
         exit();
@@ -22,7 +22,7 @@ if($_SERVER['REQUEST_METHOD'] === 'GET'){
         exit();
     }
     $typeImage = explode($nomImage, '.')[1];
-    header('Content-Type: image/'.$typeImage); // replace with the actual image type if not jpeg
+    header('Content-Type: image/'.$typeImage); 
     echo base64_decode($image['ImageBase64']);
 
 } else {
