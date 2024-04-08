@@ -14,10 +14,15 @@ if($_SERVER['REQUEST_METHOD'] === 'GET'){
     $requete_preparee->bind_param('s', $nomImage);
     $requete_preparee->execute();
     $resultat = $requete_preparee->get_result();
-    $image = $resultat->fetch_assoc();
     $requete_preparee->close();
-
-    header('Content-Type: image/jpeg'); // replace with the actual image type if not jpeg
+    if($resultat->num_rows === 0){
+        $imageInfo = getimagesize('images/defaut.jpg');
+        header('Content-Type: '.$imageInfo['mime']);
+        readfile('images/defaut.jpg');
+        exit();
+    }
+    $typeImage = explode($nomImage, '.')[1];
+    header('Content-Type: image/'.$typeImage); // replace with the actual image type if not jpeg
     echo base64_decode($image['ImageBase64']);
 
 } else {
